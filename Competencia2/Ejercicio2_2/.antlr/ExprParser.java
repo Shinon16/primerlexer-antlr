@@ -28,7 +28,7 @@ public class ExprParser extends Parser {
 
 	private static String[] makeLiteralNames() {
 		return new String[] {
-			null, null, null, null, null, "'='"
+			null, null, null, "'-'", "'+'", "'='"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
@@ -125,9 +125,11 @@ public class ExprParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class ExprContext extends ParserRuleContext {
-		public TerminalNode ID() { return getToken(ExprParser.ID, 0); }
-		public TerminalNode IGUAL() { return getToken(ExprParser.IGUAL, 0); }
-		public TerminalNode NUM() { return getToken(ExprParser.NUM, 0); }
+		public List<TerminalNode> NUM() { return getTokens(ExprParser.NUM); }
+		public TerminalNode NUM(int i) {
+			return getToken(ExprParser.NUM, i);
+		}
+		public TerminalNode MENOS() { return getToken(ExprParser.MENOS, 0); }
 		public ExprContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -140,27 +142,25 @@ public class ExprParser extends Parser {
 		try {
 			setState(11);
 			_errHandler.sync(this);
-			switch (_input.LA(1)) {
-			case ID:
+			switch ( getInterpreter().adaptivePredict(_input,0,_ctx) ) {
+			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(7);
-				match(ID);
+				match(NUM);
 				setState(8);
-				match(IGUAL);
+				match(MENOS);
 				setState(9);
 				match(NUM);
 				}
 				break;
-			case NUM:
+			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
 				setState(10);
 				match(NUM);
 				}
 				break;
-			default:
-				throw new NoViableAltException(this);
 			}
 		}
 		catch (RecognitionException re) {
@@ -180,8 +180,8 @@ public class ExprParser extends Parser {
 		"\u0001\u0001\u0003\u0001\f\b\u0001\u0001\u0001\u0000\u0000\u0002\u0000"+
 		"\u0002\u0000\u0000\f\u0000\u0004\u0001\u0000\u0000\u0000\u0002\u000b\u0001"+
 		"\u0000\u0000\u0000\u0004\u0005\u0003\u0002\u0001\u0000\u0005\u0006\u0005"+
-		"\u0000\u0000\u0001\u0006\u0001\u0001\u0000\u0000\u0000\u0007\b\u0005\u0002"+
-		"\u0000\u0000\b\t\u0005\u0005\u0000\u0000\t\f\u0005\u0001\u0000\u0000\n"+
+		"\u0000\u0000\u0001\u0006\u0001\u0001\u0000\u0000\u0000\u0007\b\u0005\u0001"+
+		"\u0000\u0000\b\t\u0005\u0003\u0000\u0000\t\f\u0005\u0001\u0000\u0000\n"+
 		"\f\u0005\u0001\u0000\u0000\u000b\u0007\u0001\u0000\u0000\u0000\u000b\n"+
 		"\u0001\u0000\u0000\u0000\f\u0003\u0001\u0000\u0000\u0000\u0001\u000b";
 	public static final ATN _ATN =

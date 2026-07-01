@@ -1,5 +1,9 @@
 NUM=1
 ID=2
-IGUAL=3
-WS=4
-'='=3
+MENOS=3
+MAS=4
+IGUAL=5
+WS=6
+'-'=3
+'+'=4
+'='=5

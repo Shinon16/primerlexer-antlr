@@ -10,11 +10,10 @@ else:
 
 def serializedATN():
     return [
-        4,1,4,16,2,0,7,0,2,1,7,1,1,0,1,0,1,0,1,0,1,0,1,1,1,1,1,1,1,1,3,1,
-        14,8,1,1,1,0,0,2,0,2,0,0,14,0,4,1,0,0,0,2,13,1,0,0,0,4,5,5,2,0,0,
-        5,6,5,3,0,0,6,7,5,1,0,0,7,8,5,0,0,1,8,1,1,0,0,0,9,10,5,2,0,0,10,
-        11,5,3,0,0,11,14,5,1,0,0,12,14,5,1,0,0,13,9,1,0,0,0,13,12,1,0,0,
-        0,14,3,1,0,0,0,1,13
+        4,1,6,14,2,0,7,0,2,1,7,1,1,0,1,0,1,0,1,1,1,1,1,1,1,1,3,1,12,8,1,
+        1,1,0,0,2,0,2,0,0,12,0,4,1,0,0,0,2,11,1,0,0,0,4,5,3,2,1,0,5,6,5,
+        0,0,1,6,1,1,0,0,0,7,8,5,1,0,0,8,9,5,3,0,0,9,12,5,1,0,0,10,12,5,1,
+        0,0,11,7,1,0,0,0,11,10,1,0,0,0,12,3,1,0,0,0,1,11
     ]
 
 class ExprParser ( Parser ):
@@ -27,9 +26,11 @@ class ExprParser ( Parser ):
 
     sharedContextCache = PredictionContextCache()
 
-    literalNames = [ "<INVALID>", "<INVALID>", "<INVALID>", "'='" ]
+    literalNames = [ "<INVALID>", "<INVALID>", "<INVALID>", "'-'", "'+'", 
+                     "'='" ]
 
-    symbolicNames = [ "<INVALID>", "NUM", "ID", "IGUAL", "WS" ]
+    symbolicNames = [ "<INVALID>", "NUM", "ID", "MENOS", "MAS", "IGUAL", 
+                      "WS" ]
 
     RULE_root = 0
     RULE_expr = 1
@@ -39,8 +40,10 @@ class ExprParser ( Parser ):
     EOF = Token.EOF
     NUM=1
     ID=2
-    IGUAL=3
-    WS=4
+    MENOS=3
+    MAS=4
+    IGUAL=5
+    WS=6
 
     def __init__(self, input:TokenStream, output:TextIO = sys.stdout):
         super().__init__(input, output)
@@ -58,14 +61,9 @@ class ExprParser ( Parser ):
             super().__init__(parent, invokingState)
             self.parser = parser
 
-        def ID(self):
-            return self.getToken(ExprParser.ID, 0)
+        def expr(self):
+            return self.getTypedRuleContext(ExprParser.ExprContext,0)
 
-        def IGUAL(self):
-            return self.getToken(ExprParser.IGUAL, 0)
-
-        def NUM(self):
-            return self.getToken(ExprParser.NUM, 0)
 
         def EOF(self):
             return self.getToken(ExprParser.EOF, 0)
@@ -83,12 +81,8 @@ class ExprParser ( Parser ):
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 4
-            self.match(ExprParser.ID)
+            self.expr()
             self.state = 5
-            self.match(ExprParser.IGUAL)
-            self.state = 6
-            self.match(ExprParser.NUM)
-            self.state = 7
             self.match(ExprParser.EOF)
         except RecognitionException as re:
             localctx.exception = re
@@ -106,14 +100,14 @@ class ExprParser ( Parser ):
             super().__init__(parent, invokingState)
             self.parser = parser
 
-        def ID(self):
-            return self.getToken(ExprParser.ID, 0)
+        def NUM(self, i:int=None):
+            if i is None:
+                return self.getTokens(ExprParser.NUM)
+            else:
+                return self.getToken(ExprParser.NUM, i)
 
-        def IGUAL(self):
-            return self.getToken(ExprParser.IGUAL, 0)
-
-        def NUM(self):
-            return self.getToken(ExprParser.NUM, 0)
+        def MENOS(self):
+            return self.getToken(ExprParser.MENOS, 0)
 
         def getRuleIndex(self):
             return ExprParser.RULE_expr
@@ -126,25 +120,25 @@ class ExprParser ( Parser ):
         localctx = ExprParser.ExprContext(self, self._ctx, self.state)
         self.enterRule(localctx, 2, self.RULE_expr)
         try:
-            self.state = 13
+            self.state = 11
             self._errHandler.sync(self)
-            token = self._input.LA(1)
-            if token in [2]:
+            la_ = self._interp.adaptivePredict(self._input,0,self._ctx)
+            if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
+                self.state = 7
+                self.match(ExprParser.NUM)
+                self.state = 8
+                self.match(ExprParser.MENOS)
                 self.state = 9
-                self.match(ExprParser.ID)
-                self.state = 10
-                self.match(ExprParser.IGUAL)
-                self.state = 11
                 self.match(ExprParser.NUM)
                 pass
-            elif token in [1]:
+
+            elif la_ == 2:
                 self.enterOuterAlt(localctx, 2)
-                self.state = 12
+                self.state = 10
                 self.match(ExprParser.NUM)
                 pass
-            else:
-                raise NoViableAltException(self)
+
 
         except RecognitionException as re:
             localctx.exception = re
