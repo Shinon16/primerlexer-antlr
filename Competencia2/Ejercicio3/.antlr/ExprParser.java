@@ -90,9 +90,9 @@ public class ExprParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class RootContext extends ParserRuleContext {
-		public TerminalNode ID() { return getToken(ExprParser.ID, 0); }
-		public TerminalNode IGUAL() { return getToken(ExprParser.IGUAL, 0); }
-		public TerminalNode NUM() { return getToken(ExprParser.NUM, 0); }
+		public ExprContext expr() {
+			return getRuleContext(ExprContext.class,0);
+		}
 		public TerminalNode EOF() { return getToken(ExprParser.EOF, 0); }
 		public RootContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -107,12 +107,8 @@ public class ExprParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(4);
-			match(ID);
+			expr();
 			setState(5);
-			match(IGUAL);
-			setState(6);
-			match(NUM);
-			setState(7);
 			match(EOF);
 			}
 		}
@@ -142,29 +138,14 @@ public class ExprParser extends Parser {
 		ExprContext _localctx = new ExprContext(_ctx, getState());
 		enterRule(_localctx, 2, RULE_expr);
 		try {
-			setState(13);
-			_errHandler.sync(this);
-			switch (_input.LA(1)) {
-			case ID:
-				enterOuterAlt(_localctx, 1);
-				{
-				setState(9);
-				match(ID);
-				setState(10);
-				match(IGUAL);
-				setState(11);
-				match(NUM);
-				}
-				break;
-			case NUM:
-				enterOuterAlt(_localctx, 2);
-				{
-				setState(12);
-				match(NUM);
-				}
-				break;
-			default:
-				throw new NoViableAltException(this);
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(7);
+			match(ID);
+			setState(8);
+			match(IGUAL);
+			setState(9);
+			match(NUM);
 			}
 		}
 		catch (RecognitionException re) {
@@ -179,17 +160,14 @@ public class ExprParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\u0004\u0001\u0004\u0010\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001"+
-		"\u0001\u0000\u0001\u0000\u0001\u0000\u0001\u0000\u0001\u0000\u0001\u0001"+
-		"\u0001\u0001\u0001\u0001\u0001\u0001\u0003\u0001\u000e\b\u0001\u0001\u0001"+
-		"\u0000\u0000\u0002\u0000\u0002\u0000\u0000\u000e\u0000\u0004\u0001\u0000"+
-		"\u0000\u0000\u0002\r\u0001\u0000\u0000\u0000\u0004\u0005\u0005\u0002\u0000"+
-		"\u0000\u0005\u0006\u0005\u0003\u0000\u0000\u0006\u0007\u0005\u0001\u0000"+
-		"\u0000\u0007\b\u0005\u0000\u0000\u0001\b\u0001\u0001\u0000\u0000\u0000"+
-		"\t\n\u0005\u0002\u0000\u0000\n\u000b\u0005\u0003\u0000\u0000\u000b\u000e"+
-		"\u0005\u0001\u0000\u0000\f\u000e\u0005\u0001\u0000\u0000\r\t\u0001\u0000"+
-		"\u0000\u0000\r\f\u0001\u0000\u0000\u0000\u000e\u0003\u0001\u0000\u0000"+
-		"\u0000\u0001\r";
+		"\u0004\u0001\u0004\f\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0001"+
+		"\u0000\u0001\u0000\u0001\u0000\u0001\u0001\u0001\u0001\u0001\u0001\u0001"+
+		"\u0001\u0001\u0001\u0000\u0000\u0002\u0000\u0002\u0000\u0000\t\u0000\u0004"+
+		"\u0001\u0000\u0000\u0000\u0002\u0007\u0001\u0000\u0000\u0000\u0004\u0005"+
+		"\u0003\u0002\u0001\u0000\u0005\u0006\u0005\u0000\u0000\u0001\u0006\u0001"+
+		"\u0001\u0000\u0000\u0000\u0007\b\u0005\u0002\u0000\u0000\b\t\u0005\u0003"+
+		"\u0000\u0000\t\n\u0005\u0001\u0000\u0000\n\u0003\u0001\u0000\u0000\u0000"+
+		"\u0000";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

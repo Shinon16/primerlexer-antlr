@@ -1,8 +1,8 @@
 grammar Expr;
 
-root : ID IGUAL NUM EOF ;
+root : expr EOF ;
 
-expr : ID IGUAL NUM | NUM ;
+expr : ID IGUAL NUM ;
 
 NUM : [0-9]+;
 
